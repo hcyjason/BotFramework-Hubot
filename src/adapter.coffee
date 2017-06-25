@@ -79,6 +79,13 @@ class BotFrameworkAdapter extends Adapter
             channelId = msg.channelId || '*'
             payload = [@using(channelId).toSendable(context, msg)]
             @connector.send payload, (err, _) -> throw err if err
+                
+    customMessage: (context, msg) ->
+        @robot.logger.debug "#{LogPrefix} Sending custom message"
+        @robot.logger.debug "#{LogPrefix} context: #{JSON.stringify(context)}"
+        msg.data.address = context.user.activity.address
+        @robot.logger.debug "#{LogPrefix} msg: #{JSON.stringify(msg.data)}"
+        @connector.send [msg.data]
  
     run: ->
         @robot.router.post @endpoint, @connector.listen()
