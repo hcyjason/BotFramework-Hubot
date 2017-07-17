@@ -85,7 +85,9 @@ class BotFrameworkAdapter extends Adapter
         @robot.logger.debug "#{LogPrefix} context: #{JSON.stringify(context)}"
         msg.data.address = context.user.activity.address
         @robot.logger.debug "#{LogPrefix} msg: #{JSON.stringify(msg.data)}"
-        @connector.send [msg.data]
+        @connector.send [msg.data], (err, _) ->
+            if err
+                throw err
  
     run: ->
         @robot.router.post @endpoint, @connector.listen()
