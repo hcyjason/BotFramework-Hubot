@@ -76,9 +76,21 @@ class BotFrameworkAdapter extends Adapter
     reply: (context, messages...) ->
         @robot.logger.info "#{LogPrefix} reply"
         for msg in messages
-            channelId = msg.channelId || '*'
-            payload = [@using(channelId).toSendable(context, msg)]
-            @connector.send payload, (err, _) -> throw err if err
+#             channelId = msg.channelId || '*'
+#             payload = [@using(channelId).toSendable(context, msg)]
+#             @connector.send payload, (err, _) -> throw err if err
+                if typeof str is 'string'
+                    msg = 
+                        type: 'message'
+                        text: str
+                        address: context.user.activity.address
+                    @robot.logger.info "#{LogPrefix} msg: #{JSON.stringify(msg)}"
+                    @connector.send [msg], (err, _) -> throw err if err
+                else
+                    msg = str.data
+                    msg.address = context.user.activity.address
+                    @robot.logger.info "#{LogPrefix} msg: #{JSON.stringify(msg)}"
+                    @connector.send [msg], (err, _) -> throw err if err
                 
     customMessage: (context, msg) ->
         @robot.logger.debug "#{LogPrefix} Sending custom message"
