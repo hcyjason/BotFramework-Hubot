@@ -75,7 +75,9 @@ class BotFrameworkAdapter extends Adapter
                 when 'conversationUpdate'
                     @robot.logger.debug "#{user.name} has joined #{address}"
                     @robot.receive new EnterMessage user
-
+    sendTyping: (context) ->
+        @connector.sendTyping()
+    
     send: (context, messages...) ->
         @robot.logger.info "#{LogPrefix} send"
         @reply context, messages...
