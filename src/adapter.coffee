@@ -77,9 +77,9 @@ class BotFrameworkAdapter extends Adapter
                     @robot.receive new EnterMessage user
                     
     sendTyping: (context) ->
-        var bot = new builder.UniversalBot(@connector, function (session) {
+        bot = new BotBuilder.UniversalBot(@connector, function (session) {
             session.sendTyping()
-        });
+        })
     
     send: (context, messages...) ->
         @robot.logger.info "#{LogPrefix} send"
