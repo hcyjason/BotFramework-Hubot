@@ -76,32 +76,32 @@ class BotFrameworkAdapter extends Adapter
                     @robot.logger.debug "#{user.name} has joined #{address}"
                     @robot.receive new EnterMessage user
                     
-#    sendTyping: (context) ->
-#        bot = new BotBuilder.UniversalBot @connector, (session) ->
-#            session.sendTyping()
+    sendTyping: (context) ->
+        bot = new BotBuilder.UniversalBot @connector, (session) ->
+            session.sendTyping()
     
-    send: (context, messages...) ->
-        @robot.logger.info "#{LogPrefix} send"
-        @reply context, messages...
- 
-    reply: (context, messages...) ->
-        @robot.logger.info "#{LogPrefix} reply"
-        for msg in messages
-#             channelId = msg.channelId || '*'
-#             payload = [@using(channelId).toSendable(context, msg)]
-#             @connector.send payload, (err, _) -> throw err if err
-                if typeof str is 'string'
-                    msg = 
-                        type: 'message'
-                        text: str
-                        address: context.user.activity.address
-                    @robot.logger.info "#{LogPrefix} msg: #{JSON.stringify(msg)}"
-                    @connector.send [msg], (err, _) -> throw err if err
-                else
-                    msg = str.data
-                    msg.address = context.user.activity.address
-                    @robot.logger.info "#{LogPrefix} msg: #{JSON.stringify(msg)}"
-                    @connector.send [msg], (err, _) -> throw err if err
+    send: (context, strings...) ->
+        @robot.logger.info "#{LogPrefix} Message"
+
+        @reply context, strings...
+
+    reply: (context, strings...) ->
+        @robot.logger.info "#{LogPrefix} Sending reply"
+        @robot.logger.info "#{LogPrefix} context: #{JSON.stringify(context)}"
+        @robot.logger.info "#{LogPrefix} strings: #{JSON.stringify(strings)}"
+        for str in strings
+            if typeof str is 'string'
+                msg =
+                    type: 'message'
+                    text: str
+                    address: context.user.activity.address
+                @robot.logger.info "#{LogPrefix} msg: #{JSON.stringify(msg)}"
+                @connector.send [msg], (err, _) -> throw err if err
+            else
+                msg = str.data
+                msg.address = context.user.activity.address
+                @robot.logger.info "#{LogPrefix} msg: #{JSON.stringify(msg)}"
+                @connector.send [msg], (err, _) -> throw err if err
                 
     customMessage: (context, msg) ->
         @robot.logger.debug "#{LogPrefix} Sending custom message"
