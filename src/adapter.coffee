@@ -63,18 +63,13 @@ class BotFrameworkAdapter extends Adapter
     onBotEvents: (activities, cb) ->
         @robot.logger.info "#{LogPrefix} onBotEvents"
         activities = [activities] unless Array.isArray activities
+        @handleActivity activity for activity in activities
 
-        for activity in activities
-            address = activity.address
-            user = @robot.brain.userForId address.user.id, name: address.user.name, room: address.conversation.id
-            user.activity = activity
-            @robot.logger.info "new botframwork activity: #{activity.type}"
-            switch activity.type
-                when 'message'
-                    @robot.receive new TextMessage(user, activity.text, activity.sourceEvent.clientActivityId)
-                when 'conversationUpdate'
-                    @robot.logger.debug "#{user.name} has joined #{address}"
-                    @robot.receive new EnterMessage user
+    handleActivity: (activity) ->
+        @robot.logger.info "#{LogPrefix} Handling activity Channel: #{activity.source}; type: #{activity.type}"
+        event = @using(activity.source).toReceivable(activity)
+        if event?
+            @robot.receive event
                     
     sendTyping: (context) ->
         bot = new BotBuilder.UniversalBot @connector, (session) ->
