@@ -31,7 +31,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-{ Robot, TextMessage, Message, User } = require 'hubot'
+{ Robot, TextMessage, EnterMessage, Message, User } = require 'hubot'
 
 LogPrefix = "hubot-botframework-middleware:"
 
