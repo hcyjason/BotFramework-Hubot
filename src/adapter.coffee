@@ -35,7 +35,7 @@ Util = require 'util'
 Timers = require 'timers'
 
 BotBuilder = require 'botbuilder'
-{ Robot, Adapter, TextMessage, User } = require 'hubot'
+{ Robot, Adapter, TextMessage, EnterMessage, User } = require 'hubot'
 { registerMiddleware, middlewareFor } = require './middlewares'
 
 LogPrefix = "hubot-botframework-adapter:"
