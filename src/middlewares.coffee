@@ -52,11 +52,11 @@ class TextMiddleware extends BaseMiddleware
         user = @robot.brain.userForId address.user.id, name: address.user.name, room: address.conversation.id
         user.activity = activity
         switch activity.type
-        when 'message'
-            return new TextMessage(user, activity.text, activity.sourceEvent?.clientActivityId || '')
-        when 'conversationUpdate'
-            @robot.logger.debug "#{user.name} has joined #{address}"
-            @robot.receive new EnterMessage user
+            when 'message'
+                return new TextMessage(user, activity.text, activity.sourceEvent?.clientActivityId || '')
+            when 'conversationUpdate'
+                @robot.logger.debug "#{user.name} has joined #{address}"
+                @robot.receive new EnterMessage user
 
     toSendable: (context, message) ->
         @robot.logger.info "#{LogPrefix} TextMiddleware toSendable"
