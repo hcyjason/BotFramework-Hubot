@@ -56,7 +56,9 @@ class TextMiddleware extends BaseMiddleware
                 return new TextMessage(user, activity.text, activity.sourceEvent?.clientActivityId || '')
             when 'conversationUpdate'
                 @robot.logger.debug "#{user.name} has joined #{address}"
-                @robot.receive new EnterMessage user
+                return new EnterMessage user
+            when 'event'
+                return new Message user
 
     toSendable: (context, message) ->
         @robot.logger.info "#{LogPrefix} TextMiddleware toSendable"
